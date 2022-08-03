@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <title>Awesome Alpine</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/index.css">
+  </head>
+  
+  <body 
+    x-data="app" 
+    x-cloak 
+    x-init="$watch('$store.cart.products', onProductAdded)"
+    :class="dark ? 'dark' : ''">
+
+    <div class="added" x-show="added">Product added!</div>
+    
+    <header x-data="header" class="main">
+      <div class="dropdown" @click.outside="hide">
+        <button class="lk" @click="toggle">
+          Cart
+          <span x-show="$store.cart.notEmpty" x-text="$store.cart.size"></span>
+        </button>
+
+        <ul x-show="dropdown">
+          <template x-for="product in $store.cart.products">
+            <li x-text="product"></li>
+          </template>
+        </ul>
+      </div>
+
+      <button class="lk" @click="toggleDark" x-text="dark ? 'Light' : 'Dark'"></button>
+    </header>
+
+    <main>
+      <section class="product" x-data="product">
+        <div class="cover" style="background-image: url('/01.jpeg')" />
+        </div>
+
+        <h1>
+          Amazing T-Shirt
+          <span class="price">$19</span>
+        </h1>
+
+        <h6>Colors Options</h6>
+        <ul class="colors">
+          <li>
+            <button class="red" 
+              @click="changeColor" 
+              :class="color === 'red' ? 'sel' : ''"></button>
+          </li>
+          <li>
+            <button class="purple" 
+              @click="changeColor"
+              :class="color === 'purple' ? 'sel' : ''"></button>
+          </li>
+          <li>
+            <button class="green" 
+              @click="changeColor"
+              :class="color === 'green' ? 'sel' : ''"></button>
+          </li>
+        </ul>
+
+        <footer>
+          <input x-model="qty" />
+          <button class="add"
+          @click="() => $store.cart.add('Amazing T-Shirt', qty, color)">
+          Add to cart
+        </button>
+        </footer>
+      </section>
+
+      <section x-data class="related">
+        <h3>Related</h3>
+        <article>
+          <div class="cover" 
+            style="background-image: url('/02.jpeg')"
+            @click.once="() => $store.cart.add('Sweater')">
+          </div>
+        </article>
+
+        <article>
+          <div class="cover" 
+            style="background-image: url('/03.jpeg')"
+            @click.once="() => $store.cart.add('Jacket')">
+          </div>
+        </article>
+
+        <article>
+          <div class="cover" 
+            style="background-image: url('/04.jpeg')"
+            @click.once="() => $store.cart.add('Jeans')">
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="/index.js"></script>
+  </body>
+</html>
